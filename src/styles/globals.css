@@ -21,3 +21,6 @@ body {
   background-repeat: repeat;
 }
 
+* p{
+  user-select: none;
+}
