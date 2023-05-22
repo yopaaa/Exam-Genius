@@ -201,11 +201,16 @@ function Home() {
             return (
               <div
                 key={option}
-                className={`${styles.option} ${selected === option ? styles.select : null}`}
                 onClick={() => {
-                  answers[no] = option
+                  // renderQuestions(questionsNo)
+                  setAnswers(() => {
+                    answers[no] = option
+                    return answers
+                  })
                   setSelected(option)
+                  // console.log(option)
                 }}
+                className={`${styles.option} ${answers[no] === option ? styles.select : null}`}
               >
                 <p>
                   {option.toUpperCase()}. {text}
@@ -219,17 +224,42 @@ function Home() {
 
     return true
   }
+  function renderReview() {
+    setQuestions(
+      <>
+        <h1 className={styles.questionMaterial}>Review</h1>
+
+        <hr />
+
+        <div className={styles.options}>
+          {answers.map((val) => {
+            return (
+              <>
+                {val ? (
+                  <div style={{ padding: 15, backgroundColor: 'green', margin: 10, borderRadius: 15 }}>{val}</div>
+                ) : (
+                  <div style={{ padding: 15, backgroundColor: 'red', margin: 10, borderRadius: 15 }}>-</div>
+                )}
+              </>
+            )
+          })}
+        </div>
+      </>
+    )
+
+    return true
+  }
   useEffect(() => {
     renderQuestions(questionsNo)
 
-    window.addEventListener('focus', function () {
-      console.log('Halaman mendapatkan fokus')
-    })
+    // window.addEventListener('focus', function () {
+    //   console.log('Halaman mendapatkan fokus')
+    // })
 
-    window.addEventListener('blur', function () {
-      console.log('Halaman kehilangan fokus')
-      setSelected(null)
-    })
+    // window.addEventListener('blur', function () {
+    //   console.log('Halaman kehilangan fokus')
+    //   setSelected(null)
+    // })
   }, [selected])
 
   return (
@@ -265,7 +295,10 @@ function Home() {
               if (questionsNo < data.length - 1) {
                 setQuestionsNo(questionsNo + 1)
                 setSelected(Date.now())
+                return
               }
+              // alert(answers)
+              renderReview()
             }}
           >
             <p>{questionsNo < data.length - 1 ? 'next' : 'send'}</p>
